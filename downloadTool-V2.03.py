@@ -6,7 +6,7 @@
 #* 
  # @Author: skillf
  # @Date: 2021-04-15 22:55:57
- # @LastEditTime: 2021-05-18 09:37:25
+ # @LastEditTime: 2021-05-18 09:48:51
  # @FilePath: \bilibiliVideoDownloadTool-V2.03\downloadTool-V2.03.py
 #*
 
@@ -31,7 +31,7 @@ with open(configFile) as f:
     #print(value[1])
     if value[1]=='\'\'':
         print("SESSDATA不能为空，请修改配置文件 ./Include/config/config\nSESSDATA=''\n")
-        exit()
+        os.exit()
 
 #检查网址信息
 def checkUrl(url):
