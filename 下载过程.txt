@@ -1,0 +1,13 @@
+
+目标URL -> 自动分析URL并选择对应 API -> 获取网页数据 -> 处理网页数据 -> videoData -> bvid、pages
+
+pages -> cid -> 获取网页数据 -> 处理网页数据  -> data -> dash -> video、audio
+
+
+video -> base_url (最终视频下载地址)
+
+audio -> base_url (最终音频下载地址)
+
+
+data -> 开始: [videoData(videos[视频的p数], pages[各p的信息](cid, part[p名], page[p的序号]))]
+视频和番剧的数据返回格式不一样，等待调整 !!!
