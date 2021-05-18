@@ -6,8 +6,8 @@
 #* 
  # @Author: skillf
  # @Date: 2021-04-15 22:55:57
- # @LastEditTime: 2021-05-18 09:50:23
- # @FilePath: \bilibiliVideoDownloadTool-V2.03\downloadTool-V2.03.py
+ # @LastEditTime: 2021-05-18 12:47:18
+ # @FilePath: \bilibiliVideoDownloadTool-v2.03\downloadTool-v2.03.py
 #*
 
 from lxml import etree
@@ -95,6 +95,7 @@ def singlePageProcessing(url,bvid,cid,title,qn,fnval,path):
         if i['id'] == int(qn):
             videoUrls.append(i['base_url'])
     #print(videoUrls)
+    #sys.exit()
 
     videoName = 'video.m4s'
     #print("===================================")
@@ -122,6 +123,11 @@ def readonly_handler(func, path, execinfo):
 def downloads(url, urlapi, videoType, accept_quality, urldata):
     accept_description = {'80':"高清 1080P",'60':"高清 720P",'32':"清晰 480P",'16':"流畅 360P"}
     qn = accept_quality[0] # height quality
+    # 大会员视频质量限制，非大会员最高 1080
+    if int(qn) > 80:
+        #print('qn:',qn)
+        qn = '80'
+    #sys.exit()
     fnval = videoType
     bvid = urldata.get('bvid')
     title = characterConversion(urldata.get('videoData').get('title'))
@@ -155,7 +161,7 @@ def downloads(url, urlapi, videoType, accept_quality, urldata):
     currentCount = 0
     start = time.perf_counter()
     if command == '1':
-        showInfo(title,bvid,len(pages),downloadPath)
+        showInfo(title,bvid,len(pages),accept_description[qn],downloadPath)
         for page in pages:
             currentCount = currentCount + 1
             #print('cid: ',page['cid'],'part: ',page['part'])
@@ -163,7 +169,7 @@ def downloads(url, urlapi, videoType, accept_quality, urldata):
             progressBar(page['part'],currentCount,len(pages),start)
             singlePageProcessing(url,bvid,page['cid'],page['part'],qn,fnval,downloadPath+'\\'+title)
     elif command == '2':
-        showInfo(title,bvid,len(sections),downloadPath)
+        showInfo(title,bvid,len(sections),accept_description[qn],downloadPath)
         for section in sections:
             currentCount = currentCount + 1
             #print('正在下载：', pages[section-1]['part'],' ',accept_description[qn])
@@ -307,7 +313,7 @@ def selectSection():
 
 
 
-def showInfo(video_title,bvid,pages,download_path):
+def showInfo(video_title,bvid,pages,video_quality,download_path):
     """
     # show eg:
     ==========================================
@@ -318,7 +324,7 @@ def showInfo(video_title,bvid,pages,download_path):
     ==========================================
     """
     print('==========================================')
-    print("正在下载：{}\n番    号：{}\n视频页数：{}\n下载路径：{}".format(video_title,bvid,pages,download_path))
+    print("正在下载：{}\n番    号：{}\n视频页数：{}\n视频质量：{}\n下载路径：{}".format(video_title,bvid,pages,video_quality,download_path))
     print('==========================================')
 
 def progressBar(section_info,current_count,content_length,start_time):
