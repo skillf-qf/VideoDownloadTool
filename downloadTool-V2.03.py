@@ -121,7 +121,7 @@ def readonly_handler(func, path, execinfo):
     func(path)
 
 def downloads(url, urlapi, videoType, accept_quality, urldata):
-    accept_description = {'80':"高清 1080P",'60':"高清 720P",'32':"清晰 480P",'16':"流畅 360P"}
+    accept_description = {'80':"1080P 高清",'60':"720P 高清",'32':"480P 清晰",'16':"360P 流畅"}
     qn = accept_quality[0] # height quality
     # 大会员视频质量限制，非大会员最高 1080
     if int(qn) > 80:
