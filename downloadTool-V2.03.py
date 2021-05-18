@@ -18,11 +18,20 @@ from os.path import join
 import os
 import shutil
 import sys
+import platform
+
+pathSeparator = '\\'
 
 currentRootDir = os.path.dirname(sys.argv[0])
 downloadPath = currentRootDir + '\\Downloads'
 ffmpeg = currentRootDir + '\\Include\\ffmpeg\\ffmpeg.exe'
 configFile = currentRootDir + '\\Include\\config\\config'
+
+if platform.system() == 'Linux':
+    downloadPath = os.getcwd() + '/Downloads'
+    ffmpeg = 'ffmpeg'
+    configFile = os.getcwd() + '/Include/config/config'
+    pathSeparator = '/'
 
 # SESSDATA有效期是30天，过后需要重新去网页获取
 with open(configFile) as f:
@@ -31,8 +40,9 @@ with open(configFile) as f:
     #print(value[1])
     if value[1]=='\'\'':
         print("SESSDATA不能为空，请修改配置文件 ./Include/config/config\nSESSDATA=''\n")
-        os.system('pause')
-        os.exit()
+        if platform.system() == 'Windows':
+            os.system('pause')
+        exit()
 
 
 #检查网址信息
@@ -111,7 +121,7 @@ def singlePageProcessing(url,bvid,cid,title,qn,fnval,path):
     #time.sleep(2)
 
     #print("\n合并文件： ",title)
-    newName = path+'\\'+title+'.mp4'
+    newName = path+pathSeparator+title+'.mp4'
     #print(newName)
     mergeFile(join(path, videoName),join(path, audioName),newName)
     #os.system('pause')
@@ -146,11 +156,11 @@ def downloads(url, urlapi, videoType, accept_quality, urldata):
     print('\n')
     if not os.path.exists(downloadPath):
         os.mkdir(downloadPath)
-    if os.path.exists(downloadPath+'\\'+title):
+    if os.path.exists(downloadPath+pathSeparator+title):
         #print(downloadPath+'\\'+title)
-        shutil.rmtree(downloadPath+'\\'+title,onerror=readonly_handler)
+        shutil.rmtree(downloadPath+pathSeparator+title,onerror=readonly_handler)
         time.sleep(1)
-    os.mkdir(downloadPath+'\\'+title)
+    os.mkdir(downloadPath+pathSeparator+title)
     #print('qn: ',qn)
     #print('videoType: ',fnval)
     #print('bvid: ',bvid)
@@ -167,14 +177,14 @@ def downloads(url, urlapi, videoType, accept_quality, urldata):
             #print('cid: ',page['cid'],'part: ',page['part'])
             #print('正在下载： ', page['part'],' ',accept_description[qn])
             progressBar(page['part'],currentCount,len(pages),start)
-            singlePageProcessing(url,bvid,page['cid'],page['part'],qn,fnval,downloadPath+'\\'+title)
+            singlePageProcessing(url,bvid,page['cid'],page['part'],qn,fnval,downloadPath+pathSeparator+title)
     elif command == '2':
         showInfo(title,bvid,len(sections),accept_description[qn],downloadPath)
         for section in sections:
             currentCount = currentCount + 1
             #print('正在下载：', pages[section-1]['part'],' ',accept_description[qn])
             progressBar(pages[section-1]['part'],currentCount,len(sections),start)
-            singlePageProcessing(url,bvid,pages[section-1]['cid'],pages[section-1]['part'],qn,fnval,downloadPath+'\\'+title)
+            singlePageProcessing(url,bvid,pages[section-1]['cid'],pages[section-1]['part'],qn,fnval,downloadPath+pathSeparator+title)
 
 #保存服务器回应的音视频数据
 def saveFile(base_url, path, filename):
@@ -257,7 +267,8 @@ def mergeFile(video_path,audio_path,new_path):
         mergeStatus = os.system(f"{ffmpeg} -loglevel quiet -i \"{video_path}\" -i \"{audio_path}\" -codec copy \"{new_path}\"")
     except IOError as e:
             print("Error: 文件合并失败：",e)
-            os.system('pause')
+            if platform.system() == 'Windows':
+                os.system('pause')
 
     if not mergeStatus:
         os.remove(video_path)
@@ -265,7 +276,8 @@ def mergeFile(video_path,audio_path,new_path):
         #print("文件合并完成 !")
     else:
         print("文件合并失败 。。。")
-        os.system('pause')
+        if platform.system() == 'Windows':
+            os.system('pause')
 
 
 def inputHandle():
@@ -392,4 +404,5 @@ if __name__ == '__main__':
     #title = '02-PN结的形成'
     #singlePageProcessing(url,bvid,cid,title,int(qn),fnval)
     print("\n\n下载完成！\n\n")
-    os.system('pause')
+    if platform.system() == 'Windows':
+        os.system('pause')
