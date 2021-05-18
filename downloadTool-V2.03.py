@@ -6,7 +6,7 @@
 #* 
  # @Author: skillf
  # @Date: 2021-04-15 22:55:57
- # @LastEditTime: 2021-05-13 15:08:12
+ # @LastEditTime: 2021-05-18 09:37:25
  # @FilePath: \bilibiliVideoDownloadTool-V2.03\downloadTool-V2.03.py
 #*
 
@@ -26,7 +26,12 @@ configFile = currentRootDir + '\\Include\\config\\config'
 
 # SESSDATA有效期是30天，过后需要重新去网页获取
 with open(configFile) as f:
-    SESSDATA = f.read()   
+    SESSDATA = f.read()
+    value = SESSDATA.split('=')
+    #print(value[1])
+    if value[1]=='\'\'':
+        print("SESSDATA不能为空，请修改配置文件 ./Include/config/config\nSESSDATA=''\n")
+        exit()
 
 #检查网址信息
 def checkUrl(url):
@@ -317,7 +322,7 @@ def showInfo(video_title,bvid,pages,download_path):
 def progressBar(section_info,current_count,content_length,start_time):
     """
     # show eg:
-    Downloading: [■■■■----------------------------------------------]  8 % Time: 00:01:11  正在下载：03矩阵的乘法和逆
+    Downloading: [■■■■----------------------------------------------]  8 % Time: 00:01:11 03矩阵的乘法和逆
     """
     # 进度条长度
     scale = 20 
@@ -332,8 +337,8 @@ def progressBar(section_info,current_count,content_length,start_time):
     # ＂ <＂、＂>＂、＂^＂符号表示左对齐、右对齐、居中对齐
     # .nf 表示保留小数点位数,n表示小数点的位数 {:.2f} 3.14 保留小数点后两位
     # {:^3.0f} ： 宽度为 3，中间对齐默认空格填充，四舍五入
-    #print("\rDownloading: [{}{}] {:^3.0f}%  Elapsed time: {:.2f}s  正在下载：{}         ".format(load,empty,dr,elapsedTime,section_info),end="")
-    print("\rDownloading: [{}{}] {:^3.0f}% Time: {:0>2d}:{:0>2d}:{:0>2d}  正在下载：{}          ".format(load,empty,dr,elapsedTime[0],elapsedTime[1],elapsedTime[2],section_info),end="")
+    #print("\rDownloading: [{}{}] {:^3.0f}% Time: {:0>2d}:{:0>2d}:{:0>2d}  正在下载：{}          ".format(load,empty,dr,elapsedTime[0],elapsedTime[1],elapsedTime[2],section_info),end="")
+    print("\rDownloading: [{}{}] {:^3.0f}% Time: {:0>2d}:{:0>2d}:{:0>2d} {}          ".format(load,empty,dr,elapsedTime[0],elapsedTime[1],elapsedTime[2],section_info),end="")
 
 def timeTransfer(t):
     h = t // 3600
