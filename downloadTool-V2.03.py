@@ -1,13 +1,11 @@
 ﻿#!/usr/bin/env python
 # coding=utf-8
 
-#!/usr/bin/env python
-# coding=utf-8
 #* 
  # @Author: skillf
  # @Date: 2021-04-15 22:55:57
- # @LastEditTime: 2021-05-18 12:47:18
- # @FilePath: \bilibiliVideoDownloadTool-v2.03\downloadTool-v2.03.py
+ # @LastEditTime: 2021-05-19 09:45:41
+ # @FilePath: \VideoDownloadTool\downloadTool-V2.03.py
 #*
 
 from lxml import etree
