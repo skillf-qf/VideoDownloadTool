@@ -4,7 +4,7 @@
 #* 
  # @Author: skillf
  # @Date: 2021-04-15 22:55:57
- # @LastEditTime: 2021-05-19 10:20:09
+ # @LastEditTime: 2021-05-19 11:55:26
  # @FilePath: \VideoDownloadTool\downloadTool-cmd.py
 #*
 
@@ -17,6 +17,7 @@ import os
 import shutil
 import sys
 import platform
+import subprocess
 
 pathSeparator = '\\'
 
@@ -262,7 +263,7 @@ def mergeFile(video_path,audio_path,new_path):
     
     # 合并的输入/输出文件整个路径都需要用双引号 "" 括起来，不然ffmpeg会报错。
     try:
-        mergeStatus = os.system(f"{ffmpeg} -loglevel quiet -i \"{video_path}\" -i \"{audio_path}\" -codec copy \"{new_path}\"")
+        mergeStatus = subprocess.Popen(f"{ffmpeg} -loglevel quiet -i \"{video_path}\" -i \"{audio_path}\" -codec copy \"{new_path}\"").wait()
     except IOError as e:
             print("Error: 文件合并失败：",e)
             if platform.system() == 'Windows':
