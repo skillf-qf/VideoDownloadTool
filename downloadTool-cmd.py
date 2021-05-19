@@ -4,8 +4,8 @@
 #* 
  # @Author: skillf
  # @Date: 2021-04-15 22:55:57
- # @LastEditTime: 2021-05-19 09:45:41
- # @FilePath: \VideoDownloadTool\downloadTool-V2.03.py
+ # @LastEditTime: 2021-05-19 10:15:18
+ # @FilePath: \VideoDownloadTool\downloadTool-V2.04.py
 #*
 
 from lxml import etree
@@ -364,10 +364,9 @@ def timeTransfer(t):
     s = (t % 3600)% 60
     return h,m,s
 
-
 if __name__ == '__main__':
 
-    print("bilibiliVideoDownloadTool-V2.03 程序已启动 (′▽`〃)\n")
+    print("bilibiliVideoDownloadTool-V2.04 程序已启动 (′▽`〃)\n")
     #print('__file__: ',__file__)
     #print('sys.path[0]: ',sys.path[0])
     #print('sys.argv[0]: ',sys.argv[0])
