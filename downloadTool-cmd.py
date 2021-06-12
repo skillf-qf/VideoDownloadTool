@@ -4,7 +4,7 @@
 #* 
  # @Author: skillf
  # @Date: 2021-04-15 22:55:57
- # @LastEditTime: 2021-06-12 16:35:25
+ # @LastEditTime: 2021-06-12 16:40:15
  # @FilePath: \VideoDownloadTool\downloadTool-cmd.py
 #*
 
@@ -368,7 +368,7 @@ def timeTransfer(t):
 
 if __name__ == '__main__':
 
-    print("bilibiliVideoDownloadTool-V2.04 程序已启动 (′▽`〃)\n")
+    print("bilibiliVideoDownloadTool-V2.04.01 程序已启动 (′▽`〃)\n")
     #print('__file__: ',__file__)
     #print('sys.path[0]: ',sys.path[0])
     #print('sys.argv[0]: ',sys.argv[0])
