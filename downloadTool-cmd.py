@@ -4,7 +4,7 @@
 #* 
  # @Author: skillf
  # @Date: 2021-04-15 22:55:57
- # @LastEditTime: 2021-05-19 11:55:26
+ # @LastEditTime: 2021-06-12 16:35:25
  # @FilePath: \VideoDownloadTool\downloadTool-cmd.py
 #*
 
@@ -130,7 +130,8 @@ def readonly_handler(func, path, execinfo):
     func(path)
 
 def downloads(url, urlapi, videoType, accept_quality, urldata):
-    accept_description = {'80':"1080P 高清",'60':"720P 高清",'32':"480P 清晰",'16':"360P 流畅"}
+    #视频质量 '116':"1080P 60帧",'80':"1080P 高清",'64':"720P 高清",'32':"480P 清晰",'16':"360P 流畅"
+    accept_description = {'80':"1080P 高清",'64':"720P 高清",'32':"480P 清晰",'16':"360P 流畅"}
     qn = accept_quality[0] # height quality
     # 大会员视频质量限制，非大会员最高 1080
     if int(qn) > 80:
