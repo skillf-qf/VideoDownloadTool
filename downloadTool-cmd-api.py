@@ -537,6 +537,6 @@ if __name__ == '__main__':
         download(select[0], select[1], bv_number, video_info[0][0], video_info[1])
         print("\n\n《{}》 下载完成！\n\n".format(video_info[0][0]))
 
-    # 打包成exe程序运行完之后暂停cmd
-    if platform.system() == 'Windows':
-        os.system('pause')
+    # # 打包成exe程序运行完之后暂停cmd
+    # if platform.system() == 'Windows':
+    #     os.system('pause')
