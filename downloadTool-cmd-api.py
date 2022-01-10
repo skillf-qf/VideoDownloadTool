@@ -284,7 +284,7 @@ def download(command, select_list, bv, title, pages_list):
     ............
     """
     STR_WIDTH = 80
-    video_path = os.path.join(os.environ.get('USERPROFILE'), "Downloads", title)
+    video_path = os.path.join(os.environ.get('USERPROFILE'), "Downloads", cs_char(title))
     if not os.path.exists(video_path):
         os.mkdir(video_path)
 
