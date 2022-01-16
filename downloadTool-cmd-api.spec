@@ -16,7 +16,7 @@ py_files = [
 ]
 
 # 打包输出exe程序的名字
-app_name = 'downloadTool-3.0'
+app_name = 'downloadTool-v3.0.1'
 
 a = Analysis(
     py_files,

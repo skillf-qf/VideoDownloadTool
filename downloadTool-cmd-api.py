@@ -111,7 +111,7 @@ def show_info(user_info, base_info, pages_info):
     """
     # show eg:
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    #                     bilibiliVideoDownloadTool-V3.0 (′▽`〃)
+    #                     bilibiliVideoDownloadTool-vx.x.x (′▽`〃)
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     #                                        当前用户:【xxx】| 等级:【xxxx】| 硬币:【xxx】
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -127,7 +127,7 @@ def show_info(user_info, base_info, pages_info):
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
     """
-    app_name = "bilibiliVideoDownloadTool-V3.0 (′▽`〃)"
+    app_name = "bilibiliVideoDownloadTool-v3.0.1 (′▽`〃)"
     username = "当前用户:【{}】| 等级:【Lv.{}】| 硬币:【{}】".format(user_info.get('name'),user_info.get('level'),user_info.get('coins'))
     tmpstr = '视频选集:【{}】| 视频质量:【{}】|'.format(base_info[5],base_info[6])
     STR_WIDTH = 80
