@@ -24,3 +24,6 @@ pyinstaller --workpath .\tmp -F .\downloadTool-cmd-api.spec
 ```
 -F  生成结果是一个exe程序，所有第三方依赖库和其他资源都被打包进该exe程序中，但最后还需要将Source文件夹单独复制到与exe文件同一目录下。
 -–workpath    为输出的所有临时文件指定存放目录: tmp
+
+#### 致谢
+- https://github.com/SocialSisterYi/bilibili-API-collect
