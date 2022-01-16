@@ -273,7 +273,6 @@ def check_existing_mp4(path, filename):
             modify_name = filename.replace('.mp4','(1).mp4')
     return modify_name
 
-#def download(command, select_list, bv, title, pages_list, headers=None, params=None, cookies=None):
 def download(command, select_list, bv, title, pages_list):
     """
     ┏━ 正在下载: xxxxxxxxxxxxxx
@@ -425,8 +424,10 @@ def merge_video(video_path,video_name):
         # print('Windows')
         # 添加ffmpeg.exe环境变量
         if os.environ['PATH'].find('Source') == -1:
-            os.environ['path'] = os.environ.get('PATH')+os.getcwd()+"\\Source\\ffmpeg;"
+            os.environ['path'] = os.environ.get('PATH')+';'+os.getcwd()+"\\Source\\ffmpeg;"
 
+    # print("\nos.environ['path']:",os.environ['path'])
+    # exit(0)
     videos_file = os.path.join(video_path, 'videos_file.txt')
     # print(videos_file)
     with open(videos_file, 'w', encoding='utf-8') as f:

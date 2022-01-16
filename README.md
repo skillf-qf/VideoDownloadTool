@@ -1,6 +1,14 @@
 # VideoDownloadTool
 这是一个b站视频下载工具，仅供学习参考！
 
+依赖的库:
+```
+requests
+qrcode
+Image
+opencv-python
+ffmpy
+```
 
 打包成exe可执行文件：
 
