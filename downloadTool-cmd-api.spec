@@ -4,8 +4,6 @@ Date         : 2022-01-10 11:31:45
 LastEditTime : 2022-01-10 12:47:25
 FilePath     : \VideoDownloadTool\downloadTool-cmd-api.spec
 '''
-
-
 # -*- mode: python -*-
 
 block_cipher = None
@@ -15,9 +13,6 @@ py_files = [
     'downloadTool-cmd-api.py',
 ]
 
-# 打包输出exe程序的名字
-app_name = 'downloadTool-v3.0.1'
-
 a = Analysis(
     py_files,
     # 此列表为项目绝对路径
@@ -26,7 +21,7 @@ a = Analysis(
     # 此列表存放所有资源文件，每个文件是一个2元组元素
     # datas: non-binary files included in the app.
     datas=None,
-    hiddenimports=[],
+    hiddenimports = [],
     hookspath=[],
     runtime_hooks=[],
     excludes=[],
@@ -37,6 +32,11 @@ a = Analysis(
 )
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
+
+import version
+# 打包输出exe程序的名字
+app_name = 'downloadTool-{}'.format(version.__version__)
+
 exe = EXE(
     pyz,
     a.scripts,

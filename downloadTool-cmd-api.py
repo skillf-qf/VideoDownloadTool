@@ -18,6 +18,7 @@ from contextlib import closing
 import re
 from ffmpy import FFmpeg
 import platform
+from version import __version__
 
 def login(url,cookies_file):
     qr = qrcode.QRCode(
@@ -127,7 +128,7 @@ def show_info(user_info, base_info, pages_info):
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
     """
-    app_name = "bilibiliVideoDownloadTool-v3.0.1 (′▽`〃)"
+    app_name = "bilibiliVideoDownloadTool-{} (′▽`〃)".format(__version__)
     username = "当前用户:【{}】| 等级:【Lv.{}】| 硬币:【{}】".format(user_info.get('name'),user_info.get('level'),user_info.get('coins'))
     tmpstr = '视频选集:【{}】| 视频质量:【{}】|'.format(base_info[5],base_info[6])
     STR_WIDTH = 80
@@ -154,7 +155,7 @@ def show_info(user_info, base_info, pages_info):
         print(single_page_info+'{x:->{y}}'.format(x=cs_time(page.get('duration')),y=STR_WIDTH-len(single_page_info.encode('GBK'))))
     print('━'*STR_WIDTH)
 
-def selectSection(page_max):
+def selectSection(pages_info):
     input_check = 0
     sections = []
     while(not input_check):
@@ -173,7 +174,7 @@ def selectSection(page_max):
                 section =  section.split(' ')
                 for s in section:
                     if re.match('P[0-9]+',s):
-                        if int(s[1:]) < page_max+1:
+                        if int(s[1:]) < len(pages_info)+1:
                             sections.append(s[1:])
                         else:
                             error_list.append(s)
@@ -532,11 +533,11 @@ if __name__ == '__main__':
         check_login(API['USER_INFO'], cookies=cookies, headers=headers)
         res_userinfo = get_url(API['USER_INFO'], headers=headers, cookies=cookies)
         user_info = res_userinfo.json().get('data')
-        video_info = get_video_details(bv_number)
-        show_info(user_info,video_info[0],video_info[1])
-        select = selectSection(len(video_info[1]))
-        download(select[0], select[1], bv_number, video_info[0][0], video_info[1])
-        print("\n\n《{}》 下载完成！\n\n".format(video_info[0][0]))
+        base_info,pages_info = get_video_details(bv_number)
+        show_info(user_info,base_info,pages_info)
+        command,select_list = selectSection(pages_info)
+        download(command, select_list, bv_number, base_info[0], pages_info)
+        print("\n\n《{}》 下载完成！\n\n".format(base_info[0]))
 
     # # 打包成exe程序运行完之后暂停cmd
     # if platform.system() == 'Windows':
