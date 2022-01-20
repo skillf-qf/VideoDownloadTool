@@ -3,8 +3,8 @@
 #*
  # @Author       : skillf
  # @Date         : 2022-01-17 09:29:03
- # @LastEditTime : 2022-01-17 09:29:03
+ # @LastEditTime : 2022-01-20 11:26:09
  # @FilePath     : \VideoDownloadTool\version.py
 #*
 
-__version__ = "v3.0.1"
+__version__ = "v3.0.2"
