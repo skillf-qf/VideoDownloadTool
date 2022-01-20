@@ -355,7 +355,9 @@ def download(command, select_list, bv, title, pages_list):
         vinfo = "【{}{} {}】".format(video_size[0],video_size[1],quality)
         print(pinfo+'{x:->{y}}'.format(x=vinfo,y=STR_WIDTH - len(pinfo.encode('GBK')) + (len(vinfo.encode('GBK'))-len(vinfo)) -1))
         # 开始对当前集进行下载，循环下载当前集的所有分段
+        section_count = 0
         for url in part_urls:
+            section_count += 1
             tmpfile = basename+'_'+str(url.get('order'))+".flv.dtdownload"
             flvfile = basename+'_'+str(url.get('order'))+".flv"
             if os.path.exists(tmpfile):
@@ -383,7 +385,7 @@ def download(command, select_list, bv, title, pages_list):
                             data_download += len(data)
                             use_time = time.time() - start_time
                             if use_time > 1 or data_download == content_size:
-                                pbar(data_download,content_size,use_time)
+                                pbar(data_download,content_size,use_time,section_count,len(part_urls))
                                 start_time = time.time()
             if int(os.path.getsize(tmpfile)) == content_size:
                 os.rename(tmpfile,flvfile)
@@ -397,7 +399,7 @@ def download(command, select_list, bv, title, pages_list):
 
 def ProgressBar():
     data_count = []
-    def bar(saved_data,total_data,usetime):
+    def bar(saved_data,total_data,usetime,current_section_count=None,total_section_count=None):
         data_count.append(saved_data)
         percent = saved_data / total_data * 100
         if len(data_count) > 1:
@@ -425,7 +427,10 @@ def ProgressBar():
         # ＂ <＂、＂>＂、＂^＂符号表示左对齐、右对齐、
         # 3.2f 字符串宽度为3，同时四舍五入保留两位小数
         # {:^3.0f} ： 字符串宽度为3，居中对齐，字符串多余宽度默认用空格填充
-        print("\r┃ ┗━ [{}{}] {:>3.0f}% {:^3.2f}{}/s Time: {}        ".format(load,empty,percent,speed,data_add[1],requested_time),end='')
+        if total_section_count is not None and total_section_count > 1: # 判断是否显示当前下载的分段编号
+            print("\r┃ ┗━ [{}{}] {:>3.0f}% [{}/{}] {:^3.2f}{}/s Time: {}        ".format(load,empty,percent,current_section_count,total_section_count,speed,data_add[1],requested_time),end='')
+        else:
+            print("\r┃ ┗━ [{}{}] {:>3.0f}% {:^3.2f}{}/s Time: {}        ".format(load,empty,percent,speed,data_add[1],requested_time),end='')
     return bar
 
 def merge_video(video_path,video_name):
