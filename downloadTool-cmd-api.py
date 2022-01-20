@@ -7,6 +7,7 @@
  # @FilePath     : \VideoDownloadTool\downloadTool-cmd-api.py
 #*
 
+from cmath import sin
 import os
 import time
 import base64
@@ -148,7 +149,7 @@ def show_info(user_info, base_info, pages_info):
     print('━'*(STR_WIDTH-len(tmpstr.encode('GBK'))))
     print('━'*STR_WIDTH)
     for page in pages_info:
-        single_page_info = 'P{} {}'.format(page.get('page'),page.get('part'))
+        single_page_info = cs_str_limit('P{} {}'.format(page.get('page'),page.get('part')))
         # len = 固定长度 - len(single_page_info.encode('GBK'))
         # -: 为字符串多余宽度的填充字符，>{y}: 右对齐, y: 字符串宽度, x: 待打印的字符串
         # '{x:->{y}}'打印字符串x，宽度(除开single_page_info的长度)为y，然后右对齐，左侧字符串多余宽度用'-'来填充
@@ -253,6 +254,13 @@ def cs_char(str):
             str=str.replace(c,'_')
     return str
 
+def cs_str_limit(str):
+    # 限制打印长度，72为总打印字符长度减去时间字符长度
+    if len(str.encode('GBK')) > 72:
+        return str[:40]
+    else:
+        return str
+
 def check_existing_mp4(path, filename):
     # 查找重名文件，并递增命名
     modify_name = filename
@@ -304,6 +312,7 @@ def download(command, select_list, bv, title, pages_list):
     time.sleep(1)
 
     print("┏━ 正在下载: {}".format(title),end='')
+    # 对选择的所有集做必要处理
     for page in pages_tmplist:
         part_name = cs_char(page.get('part'))
         if not part_name:
@@ -315,7 +324,7 @@ def download(command, select_list, bv, title, pages_list):
             basename = os.path.join(video_path, 'P'+str(page_num)+'_'+part_name)
 
         mp4file = basename+".mp4"
-        pinfo = "\n\r┣━┳━ P{} {}".format(page_num, part_name)
+        pinfo = cs_str_limit("\n\r┣━┳━ P{} {}".format(page_num, part_name))
         if os.path.exists(mp4file):
             saved = int(os.path.getsize(mp4file))
             vinfo = "【{}{} 文件已存在】".format(cs_unit(saved)[0],cs_unit(saved)[1])
@@ -345,7 +354,7 @@ def download(command, select_list, bv, title, pages_list):
         # '{x:->{y}}'打印字符串x，宽度(除开s的长度)为y，然后右对齐，左侧字符串多余宽度用'-'来填充
         vinfo = "【{}{} {}】".format(video_size[0],video_size[1],quality)
         print(pinfo+'{x:->{y}}'.format(x=vinfo,y=STR_WIDTH - len(pinfo.encode('GBK')) + (len(vinfo.encode('GBK'))-len(vinfo)) -1))
-
+        # 开始对当前集进行下载，循环下载当前集的所有分段
         for url in part_urls:
             tmpfile = basename+'_'+str(url.get('order'))+".flv.dtdownload"
             flvfile = basename+'_'+str(url.get('order'))+".flv"
