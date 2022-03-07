@@ -8,6 +8,7 @@ qrcode
 Image
 opencv-python
 ffmpy
+biliBV
 ```
 
 打包成exe可执行文件：

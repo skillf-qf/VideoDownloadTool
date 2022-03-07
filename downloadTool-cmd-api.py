@@ -19,6 +19,7 @@ from contextlib import closing
 import re
 from ffmpy import FFmpeg
 import platform
+import biliBV
 from version import __version__
 
 def login(url,cookies_file):
@@ -65,8 +66,13 @@ def inputHandle():
         if s == 'q' or s == 'Q':
             exit()
         ms = re.search('BV.{10}',s)
+        if not ms:
+            ms = re.search('av[0-9]+',s)
         if ms:
-            return ms.group(0)
+            if 'av' in ms.group(0):
+                return biliBV.encode(ms.group(0))
+            elif 'BV' in ms.group(0):
+                return ms.group(0)
         else:
             print("信息有误，请重新输入！\n")
 
@@ -83,6 +89,8 @@ def check_login(api, headers=None, cookies=None):
 def get_video_details(bv):
     params = {"bvid":bv}
     res_detail = get_url(API['VIDEO_DETAIL'], headers=headers, params=params, cookies=cookies)
+    if res_detail.json().get('code') == -404:
+        return -404,None,None
     video_title = res_detail.json().get('data').get('title')
     video_bvid = res_detail.json().get('data').get('bvid')
     total_videos = res_detail.json().get('data').get('videos')
@@ -107,7 +115,7 @@ def get_video_details(bv):
             'duration':page.get('duration'),
         })
 
-    return base_info,pages_info
+    return 0,base_info,pages_info
 
 def show_info(user_info, base_info, pages_info):
     """
@@ -160,16 +168,18 @@ def selectSection(pages_info):
     input_check = 0
     sections = []
     while(not input_check):
-        command = input("\n1：全集下载    2：指定集数下载    q/Q：退出\n请输入指令：")
+        command = input("\n[1]：全集下载    [2]：指定集数下载    [r/R]：返回主菜单    [q/Q]：退出\n请输入指令：")
         if command == 'q' or command == 'Q':
             exit()
+        elif command == 'r' or command == 'R':
+            break
         elif command == '1':
             input_check = 1
         elif command == '2':
             error_status = 0
             error_list = []
             while(not error_status):
-                section = input("\n请输入你想要下载的具体集数，多集数请以空格隔开(返回上一级请按 q/Q)\neg. P1 P2 P3 P4 P5 ...\n\n$ ")
+                section = input("\n请输入你想要下载的具体集数，多集数请以空格隔开(返回上一级请按 [q/Q] )\neg. P1 P2 P3 P4 P5 ...\n\n$ ")
                 if section == 'q' or section == 'Q':
                     break
                 section =  section.split(' ')
@@ -532,24 +542,43 @@ if __name__ == '__main__':
     # 【完整版-麻省理工-线性代数】全34讲+配套教材
     #bv_number = "BV1ix411f7Yp"
 
+    # 测试：AV号
+    # 字幕君交流场所
+    #bv_number = "av2"
+    # 弹幕测试专用
+    #bv_number = "av271"
+    # 【致自己】要努力加油
+    #bv_number = "av98800013"
+
+    # print(biliBV.encode("av2"))
+
+    # exit(0)
+
+    res_login = get_url(API['LOGIN_URL'], headers=headers)
+    qr_url = res_login.json().get('data').get('url')
+    oauthKey = res_login.json().get('data').get('oauthKey')
+    try:
+        cookies = read_cookie(COOKLES_FILE)
+    except FileNotFoundError:
+        login(qr_url, COOKLES_FILE)
+        cookies = read_cookie(COOKLES_FILE)
+    check_login(API['USER_INFO'], cookies=cookies, headers=headers)
+
     while True:
-        bv_number = inputHandle()
-
-        res_login = get_url(API['LOGIN_URL'], headers=headers)
-        qr_url = res_login.json().get('data').get('url')
-        oauthKey = res_login.json().get('data').get('oauthKey')
-        try:
-            cookies = read_cookie(COOKLES_FILE)
-        except FileNotFoundError:
-            login(qr_url, COOKLES_FILE)
-            cookies = read_cookie(COOKLES_FILE)
-
-        check_login(API['USER_INFO'], cookies=cookies, headers=headers)
         res_userinfo = get_url(API['USER_INFO'], headers=headers, cookies=cookies)
         user_info = res_userinfo.json().get('data')
-        base_info,pages_info = get_video_details(bv_number)
+
+        bv_number = inputHandle()
+        # print(bv_number)
+        # exit(0)
+        status,base_info,pages_info = get_video_details(bv_number)
+        if status == -404:
+            print("\n抱歉，该视频不存在！")
+            continue
         show_info(user_info,base_info,pages_info)
         command,select_list = selectSection(pages_info)
+        if command == 'r' or command == 'R':
+            continue
         download(command, select_list, bv_number, base_info[0], pages_info)
         print("\n\n《{}》 下载完成！\n\n".format(base_info[0]))
 
