@@ -2,9 +2,9 @@
 # coding=utf-8
 #*
  # @Author       : skillf
- # @Date         : 2022-01-17 09:29:03
- # @LastEditTime : 2022-01-20 11:26:09
+ # @Date         : 2022-03-07 09:28:48
+ # @LastEditTime : 2022-03-07 10:58:27
  # @FilePath     : \VideoDownloadTool\version.py
 #*
 
-__version__ = "v3.0.2"
+__version__ = "v3.0.3"
