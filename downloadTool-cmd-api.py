@@ -3,7 +3,7 @@
 #*
  # @Author       : skillf
  # @Date         : 2021-12-14 09:15:34
- # @LastEditTime : 2022-01-10 13:55:08
+ # @LastEditTime : 2023-11-18 00:59:49
  # @FilePath     : \VideoDownloadTool\downloadTool-cmd-api.py
 #*
 
@@ -18,8 +18,7 @@ import cv2  # pip install opencv-python
 from contextlib import closing
 import re
 from ffmpy import FFmpeg
-import platform
-import biliBV
+#import platform     # 打包成exe程序运行完之后暂停cmd
 from version import __version__
 
 def login(url,cookies_file):
@@ -60,6 +59,20 @@ def login(url,cookies_file):
                 print("请在bilibili手机客户端确认登陆...")
         time.sleep(3)
 
+# AV转BV 算法
+XOR = 177451812
+ADD = 100618342136696320
+TABLE = "fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF"
+MAP = 9, 8, 1, 6, 2, 4, 0, 7, 3, 5
+
+def av2bv(av: int) -> str:
+    av = (av ^ XOR) + ADD
+    bv = [""] * 10
+    for i in range(10):
+        bv[MAP[i]] = TABLE[(av // 58**i) % 58]
+    return "".join(bv)
+
+
 def inputHandle():
     while True:
         s = input("\n\n请输入你想要下载的b站视频的网址或者BV号(退出: q/Q)：\n\n$ ")
@@ -70,7 +83,8 @@ def inputHandle():
             ms = re.search('av[0-9]+',s)
         if ms:
             if 'av' in ms.group(0):
-                return biliBV.encode(ms.group(0))
+                bvNum = "BV"+av2bv(int(ms.group(0)[2:]))
+                return bvNum
             elif 'BV' in ms.group(0):
                 return ms.group(0)
         else:

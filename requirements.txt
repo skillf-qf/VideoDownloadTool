@@ -1,0 +1,6 @@
+requests
+qrcode
+Image
+opencv-python
+ffmpy
+pyinstaller
