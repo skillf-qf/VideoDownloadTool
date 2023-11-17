@@ -1,7 +1,7 @@
 # VideoDownloadTool
 这是一个b站视频下载工具，仅供学习参考！
 
-1. 安装本项目的Python依赖库:
+### 1. 安装本项目的Python依赖库
 ```
 requests
 qrcode
@@ -15,12 +15,12 @@ pyinstaller # 用于打包生成exe单文件
 ```
 pip install -r .\requirements.txt
 ```
-如果下载速度比较慢导致下载失败，请尝试更换国内pip源，或者使用以下命令:
+如果下载速度比较慢甚至导致下载失败，请尝试更换国内pip源，或者使用以下命令:
 ```
 pip install -r .\requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-2. 打包成exe可执行文件：
+### 2. 打包成exe可执行文件
 
 #### 使用pyinstaller库打包生成exe单文件
 安装 pyinstaller（如1中已安装则跳过该步骤）
@@ -28,7 +28,7 @@ pip install -r .\requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 py -m pip install pyinstaller
 ```
 
-根据文件`downloadTool-cmd-api.spec`的参数来打包生成exe文件，有其它参数需求可以自行研究更改该文件：
+根据文件`downloadTool-cmd-api.spec`的参数来打包生成exe文件，如有其它参数需求，可以自行研究更改该文件：
 ```
 pyinstaller .\downloadTool-cmd-api.spec
 ```
